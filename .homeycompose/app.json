@@ -1,0 +1,33 @@
+{
+  "id": "net.chipolo",
+  "version": "1.0.0",
+  "compatibility": ">=12.4.0",
+  "sdk": 3,
+  "platforms": [
+    "local"
+  ],
+  "name": {
+    "en": "Chipolo"
+  },
+  "description": {
+    "en": "Never lose your items again"
+  },
+  "category": [
+    "localization"
+  ],
+  "brandColor": "#000000",
+  "source": "https://github.com/smarthomesven/homey-chipolo",
+  "bugs": {
+    "url": "https://github.com/smarthomesven/homey-chipolo/issues"
+  },
+  "permissions": [],
+  "images": {
+    "small": "/assets/images/small.png",
+    "large": "/assets/images/large.png",
+    "xlarge": "/assets/images/xlarge.png"
+  },
+  "author": {
+    "name": "Sven Serlier",
+    "email": "sven@dypodex.com"
+  }
+}

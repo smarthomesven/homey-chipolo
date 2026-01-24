@@ -1,0 +1,11 @@
+{
+  "type": "boolean",
+  "title": { 
+    "en": "Ring",
+    "nl": "Rinkelen"
+  },
+  "getable": false,
+  "setable": true,
+  "uiComponent": "button",
+  "icon": "/assets/ring.svg"
+}

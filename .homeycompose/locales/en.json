@@ -1,0 +1,9 @@
+{
+    "pair": {
+        "save": "Login",
+        "saving": "Logging in",
+        "email": "Email address",
+        "password": "Password",
+        "failed": "Invalid credentials"
+    }
+}

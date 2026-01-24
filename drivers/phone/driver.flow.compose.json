@@ -1,0 +1,20 @@
+{
+  "triggers": [
+    {
+      "id": "battery_level_changed",
+      "title": {
+        "en": "Battery level changed",
+        "nl": "Batterijniveau veranderd"
+      }
+    }
+  ],
+  "actions": [
+    {
+      "id": "ring",
+      "title": {
+        "en": "Ring",
+        "nl": "Rinkel"
+      }
+    }
+  ]
+}

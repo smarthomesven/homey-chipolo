@@ -1,0 +1,18 @@
+{
+  "triggers": [
+    {
+      "id": "disconnected",
+      "title": {
+        "en": "Disconnected",
+        "nl": "Verbinding verbroken"
+      }
+    },
+    {
+      "id": "connected",
+      "title": {
+        "en": "Reconnected",
+        "nl": "Opnieuw verbonden"
+      }
+    }
+  ]
+}

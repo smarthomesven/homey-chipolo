@@ -1,0 +1,15 @@
+{
+  "type": "number",
+  "title": {
+    "en": "Total requests",
+    "nl": "Totale verzoeken"
+  },
+  "uiComponent": "sensor",
+  "units": {
+    "en": "%"
+  },
+  "getable": true,
+  "setable": false,
+  "insights": true,
+  "icon": "/assets/battery.svg"
+}
