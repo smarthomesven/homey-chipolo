@@ -13,7 +13,7 @@ module.exports = class ChipoloApp extends Homey.App {
     this.pollChipolo();
     this.homey.setInterval(() => {
       this.pollChipolo();
-    }, 30000); // Poll every minute
+    }, 900 * 1000); // Poll every 15 minutes
   }
 
   async pollChipolo() {
@@ -27,6 +27,7 @@ module.exports = class ChipoloApp extends Homey.App {
 
       const response = await axios.get('https://api.chipolo.com/v2/user/26053616/state', {
         headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36',
           'Chipolo-Client-Version': 0,
           'Chipolo-Token': token,
           'Chipolo-User-Id': userId,
@@ -97,6 +98,7 @@ module.exports = class ChipoloApp extends Homey.App {
         }
       }, {
         headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36',
           'Chipolo-Client-Version': 0,
         },
       });

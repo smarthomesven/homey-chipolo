@@ -55,6 +55,7 @@ module.exports = class PhoneDriver extends Homey.Driver {
           }
         }, {
           headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36',
             'Chipolo-Client-Version': 0,
           },
         });
@@ -96,6 +97,7 @@ module.exports = class PhoneDriver extends Homey.Driver {
 
       const response = await axios.get('https://api.chipolo.com/v2/user/26053616/state', {
         headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36',
           'Chipolo-Client-Version': 0,
           'Chipolo-Token': token,
           'Chipolo-User-Id': userId,
