@@ -4,5 +4,8 @@
   },
   "1.0.1": {
     "en": "Fixed battery level capability name"
+  },
+  "1.0.2": {
+    "en": "Fake User-Agent header and reduced polling frequency to avoid IP bans/rate limits by Cloudflare"
   }
 }
