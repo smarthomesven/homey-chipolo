@@ -7,5 +7,11 @@
   },
   "1.0.2": {
     "en": "Fake User-Agent header and reduced polling frequency to avoid IP bans/rate limits by Cloudflare"
+  },
+  "1.0.3": {
+    "en": "Fix URL"
+  },
+  "1.0.4": {
+    "en": "Added fix for Cloudflare IP bans"
   }
 }

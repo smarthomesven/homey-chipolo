@@ -10,6 +10,7 @@ module.exports = class ChipoloApp extends Homey.App {
    */
   async onInit() {
     this.log('MyApp has been initialized');
+    this.isBlocked = false;
     this.pollChipolo();
     this.homey.setInterval(() => {
       this.pollChipolo();
@@ -17,6 +18,12 @@ module.exports = class ChipoloApp extends Homey.App {
   }
 
   async pollChipolo() {
+    // Skip polling if we're currently blocked
+    if (this.isBlocked) {
+      this.log('Polling skipped - currently in cooldown period due to rate limiting');
+      return;
+    }
+
     try {
       const token = this.homey.settings.get('chipolo_token');
       const userId = this.homey.settings.get('chipolo_user_id');
@@ -25,7 +32,7 @@ module.exports = class ChipoloApp extends Homey.App {
         return [];
       }
 
-      const response = await axios.get('https://api.chipolo.com/v2/user/26053616/state', {
+      const response = await axios.get(`https://api.chipolo.com/v2/user/${userId}/state`, {
         headers: {
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36',
           'Chipolo-Client-Version': 0,
@@ -59,12 +66,79 @@ module.exports = class ChipoloApp extends Homey.App {
       }
     } catch (error) {
       this.error('Error listing devices:', error);
+      
+      // Handle 403 Forbidden (Cloudflare block)
+      if (error.response?.status === 403) {
+        this.log('403 Forbidden detected - likely Cloudflare rate limiting. Pausing polling for 24 hours.');
+        await this.handleCloudflareBlock();
+        return;
+      }
+      
+      // Handle 401 Unauthorized (token expired)
       if (error.response?.status === 401) {
         this.homey.settings.set('loggedIn', false);
         await this.chipoloLogin();
         this.pollChipolo();
       }
     }
+  }
+
+  async handleCloudflareBlock() {
+    this.isBlocked = true;
+    const blockMessage = "IP block by Cloudflare detected, polling is paused for 24 hours";
+    
+    // Set all Chipolo devices as unavailable
+    try {
+      const chipoloDriver = this.homey.drivers.getDriver('chipolo');
+      const chipoloDevices = chipoloDriver.getDevices();
+      for (const device of chipoloDevices) {
+        await device.setUnavailable(blockMessage);
+      }
+    } catch (error) {
+      this.error('Error setting Chipolo devices unavailable:', error);
+    }
+
+    // Set all phone devices as unavailable
+    try {
+      const phoneDriver = this.homey.drivers.getDriver('phone');
+      const phoneDevices = phoneDriver.getDevices();
+      for (const device of phoneDevices) {
+        await device.setUnavailable(blockMessage);
+      }
+    } catch (error) {
+      this.error('Error setting phone devices unavailable:', error);
+    }
+
+    // Wait 24 hours before resuming
+    this.log('Starting 24-hour cooldown period...');
+    setTimeout(async () => {
+      this.log('24-hour cooldown period ended, resuming polling...');
+      this.isBlocked = false;
+      
+      // Try to set devices back to available
+      try {
+        const chipoloDriver = this.homey.drivers.getDriver('chipolo');
+        const chipoloDevices = chipoloDriver.getDevices();
+        for (const device of chipoloDevices) {
+          await device.setAvailable();
+        }
+      } catch (error) {
+        this.error('Error setting Chipolo devices available:', error);
+      }
+
+      try {
+        const phoneDriver = this.homey.drivers.getDriver('phone');
+        const phoneDevices = phoneDriver.getDevices();
+        for (const device of phoneDevices) {
+          await device.setAvailable();
+        }
+      } catch (error) {
+        this.error('Error setting phone devices available:', error);
+      }
+
+      // Resume polling immediately
+      this.pollChipolo();
+    }, 24 * 60 * 60 * 1000); // 24 hours in milliseconds
   }
 
   async chipoloLogin() {
