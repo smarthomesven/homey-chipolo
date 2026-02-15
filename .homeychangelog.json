@@ -13,5 +13,8 @@
   },
   "1.0.4": {
     "en": "Added fix for Cloudflare IP bans"
+  },
+  "1.0.5": {
+    "en": "Update dependencies"
   }
 }
